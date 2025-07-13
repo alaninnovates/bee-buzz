@@ -4,10 +4,9 @@ import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
-    Colors,
-    EmbedBuilder,
     StringSelectMenuBuilder,
 } from 'discord.js';
+import { pages } from '../lib/help/pages';
 
 @ApplyOptions<Command.Options>({
     name: 'help',
@@ -28,17 +27,7 @@ export class HelpCommand extends Command {
         interaction: Command.ChatInputCommandInteraction,
     ) {
         await interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setTitle('Bee Buzz Help')
-                    .setDescription(
-                        `Visit the documentation below for a list of all commands. Join the support server if you have any more questions.`,
-                    )
-                    .setFooter({
-                        text: 'Made by alaninnovates',
-                    })
-                    .setColor(Colors.Yellow),
-            ],
+            embeds: [pages.home],
             components: [
                 new ActionRowBuilder<ButtonBuilder>().addComponents(
                     new ButtonBuilder()

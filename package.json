@@ -12,11 +12,13 @@
         "@sapphire/discord.js-utilities": "^7.3.3",
         "@sapphire/framework": "^5.3.6",
         "@sapphire/utilities": "^3.18.2",
+        "common-tags": "^1.8.2",
         "discord.js": "^14.21.0",
         "dotenv": "^17.2.0"
     },
     "devDependencies": {
         "@sapphire/ts-config": "^5.0.1",
+        "@types/common-tags": "^1.8.4",
         "typescript": "^5.8.3"
     }
 }
