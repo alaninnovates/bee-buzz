@@ -14,7 +14,8 @@
         "@sapphire/utilities": "^3.18.2",
         "common-tags": "^1.8.2",
         "discord.js": "^14.21.0",
-        "dotenv": "^17.2.0"
+        "dotenv": "^17.2.0",
+        "mongodb": "^6.17.0"
     },
     "devDependencies": {
         "@sapphire/ts-config": "^5.0.1",

@@ -1,11 +1,8 @@
-import { SapphireClient } from '@sapphire/framework';
-import { GatewayIntentBits } from 'discord.js';
 import { config } from 'dotenv';
+import { Client } from './client';
 
 config();
 
-const client = new SapphireClient({
-    intents: [GatewayIntentBits.Guilds],
-});
+const client = new Client();
 
 client.login(process.env.DISCORD_TOKEN);

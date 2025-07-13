@@ -15,11 +15,11 @@ export const pages = {
         .setTitle(':honey_pot: Hive building')
         .setDescription(
             stripIndents`
-▸ \`/start_hive\` - Create your first hive  
-▸ \`/check_hive\` - View your hive's status  
-▸ \`/expand_hive\` - Upgrade your hive chambers  
-▸ \`/breed_bees [bee1] [bee2]\` - Combine bees to hatch new ones  
-▸ \`/bee_info [bee name]\` - See details & stats of any bee
+▸ \`/start-hive\` - Create your first hive  
+▸ \`/check-hive\` - View your hive's status  
+▸ \`/expand-hive\` - Upgrade your hive chambers  
+▸ \`/breed [bee1] [bee2]\` - Combine bees to hatch new ones  
+▸ \`/bee-info [bee name]\` - See details & stats of any bee
 
 [] = Optional | <> = Required
 `,
