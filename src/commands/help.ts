@@ -6,7 +6,7 @@ import {
     ButtonStyle,
     StringSelectMenuBuilder,
 } from 'discord.js';
-import { pages } from '../lib/help/pages';
+import { menuData, pages } from '../lib/help/pages';
 
 @ApplyOptions<Command.Options>({
     name: 'help',
@@ -43,23 +43,13 @@ export class HelpCommand extends Command {
                     new StringSelectMenuBuilder()
                         .setCustomId('help-select')
                         .setPlaceholder('Select a category')
-                        .addOptions([
-                            {
-                                label: 'Home',
-                                value: 'home',
-                                emoji: '🏠',
-                            },
-                            {
-                                label: 'Hive Building',
-                                value: 'hive-building',
-                                emoji: '🍯',
-                            },
-                            {
-                                label: 'Other',
-                                value: 'other',
-                                emoji: '🐝',
-                            },
-                        ]),
+                        .addOptions(
+                            ...Object.entries(menuData).map(([id, value]) => ({
+                                label: value.name,
+                                value: id,
+                                emoji: value.emoji,
+                            })),
+                        ),
                 ),
             ],
         });

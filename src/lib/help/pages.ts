@@ -25,6 +25,17 @@ export const pages = {
 `,
         )
         .setColor(Colors.Yellow),
+    'pollen-honey': new EmbedBuilder()
+        .setTitle('🌸 Pollen & Honey')
+        .setDescription(
+            stripIndents`
+▸ \`/forage\` - Collect pollen from flowers
+▸ \`/harvest\` - Turn pollen into honey jars
+
+[] = Optional | <> = Required
+`,
+        )
+        .setColor(Colors.Orange),
     other: new EmbedBuilder()
         .setTitle(':honeybee: Other Commands')
         .setDescription(
@@ -35,4 +46,28 @@ export const pages = {
         `,
         )
         .setColor(Colors.Blue),
+};
+
+export const menuData = {
+    home: {
+        emoji: '🏠',
+        name: 'Home',
+    },
+    'hive-building': {
+        emoji: '🍯',
+        name: 'Hive Building',
+    },
+    'pollen-honey': {
+        emoji: '🌸',
+        name: 'Pollen & Honey',
+    },
+    other: {
+        emoji: '🐝',
+        name: 'Other',
+    },
+} as {
+    [K in keyof typeof pages]: {
+        emoji: string;
+        name: string;
+    };
 };
