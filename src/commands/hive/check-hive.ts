@@ -2,6 +2,8 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
 import { beeData } from '../../lib/data';
+import { calculateForage } from '../../lib/forage';
+import { minutesBetween } from '../../lib/date';
 
 @ApplyOptions<Command.Options>({
     name: 'check-hive',
@@ -31,6 +33,16 @@ export class CheckHiveCommand extends Command {
             });
             return;
         }
+        let pollen = 0;
+        const forage = await this.container.database
+            .collection('forage')
+            .findOne({
+                userId: interaction.user.id,
+            });
+        if (forage) {
+            const ppm = calculateForage(forage.bees);
+            pollen = minutesBetween(forage.startedAt, new Date()) * ppm;
+        }
         await interaction.reply({
             embeds: [
                 new EmbedBuilder()
@@ -57,7 +69,7 @@ export class CheckHiveCommand extends Command {
                         },
                         {
                             name: 'Pollen',
-                            value: `🌼 ${user.pollen || 0} units`,
+                            value: `🌼 ${pollen} units`,
                             inline: true,
                         },
                         {
