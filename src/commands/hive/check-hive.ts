@@ -48,7 +48,7 @@ export class CheckHiveCommand extends Command {
                                     }${user.bees[bee] > 1 ? 's' : ''}`;
                                 })
                                 .join(' | '),
-                            inline: true,
+                            inline: false,
                         },
                         {
                             name: 'Honey',

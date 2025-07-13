@@ -41,7 +41,7 @@ export class StartHiveCommand extends Command {
                         {
                             name: 'Bees',
                             value: `${beeData.queen.emoji} 1 ${beeData.queen.name} | ${beeData.worker.emoji} 3 ${beeData.worker.name}s`,
-                            inline: true,
+                            inline: false,
                         },
                         {
                             name: 'Honey Reserves',
