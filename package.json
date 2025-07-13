@@ -1,0 +1,22 @@
+{
+    "name": "bee-buzz",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "scripts": {},
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "@sapphire/decorators": "^6.2.0",
+        "@sapphire/discord.js-utilities": "^7.3.3",
+        "@sapphire/framework": "^5.3.6",
+        "@sapphire/utilities": "^3.18.2",
+        "discord.js": "^14.21.0",
+        "dotenv": "^17.2.0"
+    },
+    "devDependencies": {
+        "@sapphire/ts-config": "^5.0.1",
+        "typescript": "^5.8.3"
+    }
+}
