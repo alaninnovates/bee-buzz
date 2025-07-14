@@ -1,7 +1,7 @@
 import { beeData } from './data';
 
 type Bees = {
-    [K in keyof typeof beeData]?: number;
+    [K in keyof typeof beeData]: number;
 };
 
 export const calculateForage = (bees: Bees) => {
