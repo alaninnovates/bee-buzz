@@ -78,12 +78,20 @@ export class UpgradeCommand extends Command {
         const userItems = user.items || {};
         const { ok, missing } = compareRequiredItems(requiredItems, userItems);
         if (ok) {
-            await this.container.database
-                .collection('hives')
-                .updateOne(
-                    { userId: interaction.user.id },
-                    { $inc: { memoryMatchLevel: 1 } },
-                );
+            const decItems = Object.entries(requiredItems).reduce(
+                (acc, [item, amount]) => {
+                    acc[item] = (userItems[item] || 0) - amount;
+                    return acc;
+                },
+                {} as { [key: string]: number },
+            );
+            await this.container.database.collection('hives').updateOne(
+                { userId: interaction.user.id },
+                {
+                    $inc: { memoryMatchLevel: 1 },
+                    $set: { items: decItems },
+                },
+            );
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
