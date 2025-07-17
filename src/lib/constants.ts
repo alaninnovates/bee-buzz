@@ -1,5 +1,5 @@
-export const defaultHiveLimit = 10;
-export const maxHiveLimit = 50;
+export const defaultHiveLimit = 9;
+export const maxHiveLimit = 25;
 
 export const calculateExpandHiveCost = (currentSize: number): number => {
     return Math.floor(
