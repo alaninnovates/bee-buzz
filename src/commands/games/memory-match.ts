@@ -129,9 +129,43 @@ export class MemoryMatchCommand extends Command {
             });
             return;
         }
-        const level = interaction.options.getString('level', true);
-        console.log(getItems('regular'));
-        console.log(getItems('mega'));
-        console.log(getItems('extreme'));
+        const level = interaction.options.getString('level', true) as
+            | 'regular'
+            | 'mega'
+            | 'extreme';
+        const userMemoryMatchLevel = user.memoryMatchLevel || 1;
+        if (
+            (level === 'mega' && userMemoryMatchLevel < 2) ||
+            (level === 'extreme' && userMemoryMatchLevel < 3)
+        ) {
+            await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle('🚫 Level Locked')
+                        .setDescription(
+                            `Your memory match pass is not sufficient. To upgrade, use \`/upgrade memory-match\`.`,
+                        )
+                        .setColor(Colors.Red),
+                ],
+            });
+            return;
+        }
+        const items = getItems(level);
+        this.container.caches.memoryMatch.add(
+            interaction.user.id,
+            items,
+            level,
+        );
+        return interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                    .setTitle('🧠 Memory Match')
+                    .setDescription(`Try to match as many pairs as possible!`)
+                    .setColor(Colors.Blue),
+            ],
+            components: this.container.caches.memoryMatch.getBoardComponents(
+                interaction.user.id,
+            ),
+        });
     }
 }

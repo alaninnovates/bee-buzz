@@ -50,6 +50,7 @@ export class StartHiveCommand extends Command {
             items: {},
             createdAt: new Date(),
             maxHiveSize: defaultHiveLimit,
+            memoryMatchLevel: 1,
         });
         await interaction.reply({
             embeds: [

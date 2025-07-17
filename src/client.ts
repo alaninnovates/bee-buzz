@@ -2,6 +2,7 @@ import { container, SapphireClient } from '@sapphire/framework';
 import { GatewayIntentBits } from 'discord.js';
 import { createClient } from './lib/db';
 import { Db, MongoClient } from 'mongodb';
+import { MemoryMatchCache } from './lib/caches/memory-match';
 
 export class Client extends SapphireClient {
     public constructor() {
@@ -14,6 +15,9 @@ export class Client extends SapphireClient {
         container.databaseClient = createClient();
         await container.databaseClient.connect();
         container.database = container.databaseClient.db('beeBuzz');
+        container.caches = {
+            memoryMatch: new MemoryMatchCache(),
+        };
         return super.login(token);
     }
 
@@ -27,5 +31,8 @@ declare module '@sapphire/pieces' {
     interface Container {
         databaseClient: MongoClient;
         database: Db;
+        caches: {
+            memoryMatch: MemoryMatchCache;
+        };
     }
 }
