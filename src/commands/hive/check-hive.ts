@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
 import { calculateForage, calculateMaxForageTime } from '../../lib/data/forage';
-import { secondsBetween } from '../../lib/utils/date';
+import { minutesBetween } from '../../lib/utils/date';
 import { UserDocument } from '../../lib/types';
 import { renderBeeText } from '../../lib/render-hive';
 
@@ -44,8 +44,8 @@ export class CheckHiveCommand extends Command {
             });
         if (forage) {
             const ppm = calculateForage(forage.bees);
-            const maxForageTime = calculateMaxForageTime(forage.bees);
-            const elapsed = secondsBetween(forage.startedAt, new Date());
+            const maxForageTime = calculateMaxForageTime(forage.bees) / 60;
+            const elapsed = minutesBetween(forage.startedAt, new Date());
             pollen = ppm * (elapsed > maxForageTime ? maxForageTime : elapsed);
         }
         await interaction.reply({

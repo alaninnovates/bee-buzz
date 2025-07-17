@@ -6,7 +6,7 @@ import {
     calculateHoney,
     calculateMaxForageTime,
 } from '../../lib/data/forage';
-import { humanReadableTime, secondsBetween } from '../../lib/utils/date';
+import { humanReadableTime, minutesBetween } from '../../lib/utils/date';
 import { ForageDocument, UserDocument } from '../../lib/types';
 
 @ApplyOptions<Command.Options>({
@@ -52,8 +52,8 @@ export class HarvestCommand extends Command {
             return;
         }
         const ppm = calculateForage(forage.bees);
-        const maxForageTime = calculateMaxForageTime(forage.bees);
-        const elapsed = secondsBetween(forage.startedAt, new Date());
+        const maxForageTime = calculateMaxForageTime(forage.bees) / 60;
+        const elapsed = minutesBetween(forage.startedAt, new Date());
         const pollen =
             ppm * (elapsed > maxForageTime ? maxForageTime : elapsed);
         const honey = calculateHoney(pollen, forage.bees);
