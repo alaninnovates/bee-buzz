@@ -1,4 +1,5 @@
 export const emojiReplacements = {
+    honey: '🍯',
     treat: '🍬',
     blueberry: '🫐',
     pineapple: '🍍',
@@ -11,4 +12,4 @@ export const emojiReplacements = {
     diamondEgg: '💎',
 };
 
-export type Item = keyof typeof emojiReplacements;
+export type Item = Exclude<keyof typeof emojiReplacements, 'honey'>;
