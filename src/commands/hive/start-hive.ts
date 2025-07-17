@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { EmbedBuilder } from 'discord.js';
+import { Colors, EmbedBuilder } from 'discord.js';
 import { beeData } from '../../lib/data';
 import { defaultHiveLimit } from '../../lib/constants';
 
@@ -22,6 +22,24 @@ export class StartHiveCommand extends Command {
     public override async chatInputRun(
         interaction: Command.ChatInputCommandInteraction,
     ) {
+        const existingHive = await this.container.database
+            .collection('hives')
+            .findOne({
+                userId: interaction.user.id,
+            });
+        if (existingHive) {
+            await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle('🚫 Hive Already Exists')
+                        .setDescription(
+                            'You already have a hive! Forage and get honey with `/forage`.',
+                        )
+                        .setColor(Colors.Red),
+                ],
+            });
+            return;
+        }
         await this.container.database.collection('hives').insertOne({
             userId: interaction.user.id,
             bees: {
