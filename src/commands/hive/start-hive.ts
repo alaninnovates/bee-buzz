@@ -73,7 +73,7 @@ export class StartHiveCommand extends Command {
         await interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                    .setTitle('🍯 Welcome to Bee Buzz!')
+                    .setTitle('🍯 Welcome to Beebo!')
                     .setDescription(
                         "Buzz buzz! You've started your first hive! You've got:",
                     )

@@ -3,7 +3,7 @@ import { stripIndents } from 'common-tags';
 
 export const pages = {
     home: new EmbedBuilder()
-        .setTitle('Bee Buzz Help')
+        .setTitle('Beebo Help')
         .setDescription(
             `Visit the documentation below for a list of all commands. Join the support server if you have any more questions.`,
         )
