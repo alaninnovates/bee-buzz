@@ -8,7 +8,7 @@ import { breedBees, calculateBreedCost } from '../../lib/breed';
     name: 'breed',
     description: 'Breed bees in your hive',
 })
-export class HarvestCommand extends Command {
+export class BreedCommand extends Command {
     public override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand(
             (builder) =>

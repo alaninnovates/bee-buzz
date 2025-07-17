@@ -11,7 +11,7 @@ import { beeData } from '../../lib/data';
     name: 'evict',
     description: 'Remove a bee from your hive',
 })
-export class StartHiveCommand extends Command {
+export class EvictCommand extends Command {
     public override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand(
             (builder) =>
