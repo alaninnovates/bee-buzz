@@ -1,15 +1,13 @@
-import { beeData } from './data';
+import { BeeInfo } from '../types';
 
-type Bees = {
-    [K in keyof typeof beeData]: number;
-};
-
-export const calculateForage = (bees: Bees) => {
+export const calculateForage = (bees: BeeInfo[]) => {
     let totalPollenPerMinute = 0;
 
-    Object.entries(bees).forEach(([beeId, quantity]) => {
+    bees.forEach((bee) => {
+        const { type, level } = bee;
         let baseRate = 0;
-        switch (beeId) {
+
+        switch (type) {
             case 'worker':
                 baseRate = 1;
                 break;
@@ -20,29 +18,33 @@ export const calculateForage = (bees: Bees) => {
                 baseRate = 0;
         }
 
-        let pollenFromThisBee = quantity * baseRate;
-        if (beeId === 'speed') {
+        const levelMultiplier = 1 + level * 0.1;
+        let pollenFromThisBee = baseRate * levelMultiplier;
+
+        if (type === 'speed') {
             pollenFromThisBee *= 1.5;
         }
-        if (beeId === 'guard') {
-            pollenFromThisBee += quantity * 0.05;
+        if (type === 'guard') {
+            pollenFromThisBee += 0.05;
         }
 
         totalPollenPerMinute += pollenFromThisBee;
     });
+
     return totalPollenPerMinute;
 };
 
-export const calculateHoney = (pollenQuantity: number, bees: Bees) => {
+export const calculateHoney = (pollenQuantity: number, bees: BeeInfo[]) => {
     let baseRate = 10;
 
     let efficiencyBonus = 0;
-    Object.entries(bees).forEach(([beeId, quantity]) => {
-        if (beeId === 'queen_bee') {
+    bees.forEach((bee) => {
+        const { type } = bee;
+        if (type === 'queen') {
             efficiencyBonus += 0.2;
         }
-        if (beeId === 'rainbow_bee') {
-            efficiencyBonus += 0.05 * quantity;
+        if (type === 'rainbow') {
+            efficiencyBonus += 0.05;
         }
     });
 

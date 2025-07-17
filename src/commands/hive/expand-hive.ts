@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { calculateExpandHiveCost } from '../../lib/constants';
 import { Colors, EmbedBuilder } from 'discord.js';
+import { UserDocument } from '../../lib/types';
 
 @ApplyOptions<Command.Options>({
     name: 'expand-hive',
@@ -21,9 +22,11 @@ export class ExpandHiveCommand extends Command {
     public override async chatInputRun(
         interaction: Command.ChatInputCommandInteraction,
     ) {
-        const user = await this.container.database.collection('hives').findOne({
-            userId: interaction.user.id,
-        });
+        const user = await this.container.database
+            .collection<UserDocument>('hives')
+            .findOne({
+                userId: interaction.user.id,
+            });
         if (!user) {
             await interaction.reply({
                 content:

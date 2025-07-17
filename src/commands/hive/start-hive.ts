@@ -42,10 +42,28 @@ export class StartHiveCommand extends Command {
         }
         await this.container.database.collection('hives').insertOne({
             userId: interaction.user.id,
-            bees: {
-                queen: 1,
-                worker: 3,
-            },
+            bees: [
+                {
+                    type: 'queen',
+                    level: 1,
+                    xp: 0,
+                },
+                {
+                    type: 'worker',
+                    level: 1,
+                    xp: 0,
+                },
+                {
+                    type: 'worker',
+                    level: 1,
+                    xp: 0,
+                },
+                {
+                    type: 'worker',
+                    level: 1,
+                    xp: 0,
+                },
+            ],
             honey: 0,
             items: {},
             createdAt: new Date(),

@@ -3,6 +3,7 @@ import { Command } from '@sapphire/framework';
 import { Colors, EmbedBuilder } from 'discord.js';
 import { upgradeReqirements } from '../../lib/data/upgrade';
 import { emojiReplacements, Item } from '../../lib/data/items';
+import { UserDocument } from '../../lib/types';
 
 const compareRequiredItems = (
     required: { [key: string]: number },
@@ -54,9 +55,11 @@ export class UpgradeCommand extends Command {
     public override async chatInputRun(
         interaction: Command.ChatInputCommandInteraction,
     ) {
-        const user = await this.container.database.collection('hives').findOne({
-            userId: interaction.user.id,
-        });
+        const user = await this.container.database
+            .collection<UserDocument>('hives')
+            .findOne({
+                userId: interaction.user.id,
+            });
         if (!user) {
             await interaction.reply({
                 content:
@@ -80,7 +83,7 @@ export class UpgradeCommand extends Command {
         if (ok) {
             const decItems = Object.entries(requiredItems).reduce(
                 (acc, [item, amount]) => {
-                    acc[item] = (userItems[item] || 0) - amount;
+                    acc[item] = (userItems[item as Item] || 0) - amount;
                     return acc;
                 },
                 {} as { [key: string]: number },

@@ -2,7 +2,8 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
 import { calculateForage } from '../../lib/data/forage';
-import { beeData } from '../../lib/data/data';
+import { ForageDocument, UserDocument } from '../../lib/types';
+import { renderBeeText } from '../../lib/render-hive';
 
 @ApplyOptions<Command.Options>({
     name: 'forage',
@@ -22,9 +23,11 @@ export class ForageCommand extends Command {
     public override async chatInputRun(
         interaction: Command.ChatInputCommandInteraction,
     ) {
-        const user = await this.container.database.collection('hives').findOne({
-            userId: interaction.user.id,
-        });
+        const user = await this.container.database
+            .collection<UserDocument>('hives')
+            .findOne({
+                userId: interaction.user.id,
+            });
         if (!user) {
             await interaction.reply({
                 content:
@@ -33,7 +36,7 @@ export class ForageCommand extends Command {
             return;
         }
         const forage = await this.container.database
-            .collection('forage')
+            .collection<ForageDocument>('forage')
             .findOne({
                 userId: interaction.user.id,
             });
@@ -60,20 +63,12 @@ export class ForageCommand extends Command {
                 new EmbedBuilder()
                     .setTitle('🍃 Foraging Started!')
                     .setDescription(
-                        `${user.bees.worker} Worker Bees sent to the wildflower fields. To finish foraging, use the \`/harvest\` command.`,
+                        `Your bees were sent to the wildflower fields. To finish foraging, use the \`/harvest\` command.`,
                     )
                     .addFields([
                         {
                             name: 'Bees Foraging',
-                            value: Object.keys(user.bees)
-                                .map((bee) => {
-                                    const data =
-                                        beeData[bee as keyof typeof beeData];
-                                    return `${data.emoji} ${user.bees[bee]} ${
-                                        data.name
-                                    }${user.bees[bee] > 1 ? 's' : ''}`;
-                                })
-                                .join(' | '),
+                            value: renderBeeText(user.bees),
                         },
                         {
                             name: 'Est Pollen Per Minute',

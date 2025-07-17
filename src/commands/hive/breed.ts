@@ -3,6 +3,7 @@ import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
 import { beeData } from '../../lib/data/data';
 import { breedBees, calculateBreedCost } from '../../lib/data/breed';
+import { UserDocument } from '../../lib/types';
 
 @ApplyOptions<Command.Options>({
     name: 'breed',
@@ -48,9 +49,11 @@ export class BreedCommand extends Command {
     public override async chatInputRun(
         interaction: Command.ChatInputCommandInteraction,
     ) {
-        const user = await this.container.database.collection('hives').findOne({
-            userId: interaction.user.id,
-        });
+        const user = await this.container.database
+            .collection<UserDocument>('hives')
+            .findOne({
+                userId: interaction.user.id,
+            });
         if (!user) {
             await interaction.reply({
                 content:
@@ -74,8 +77,14 @@ export class BreedCommand extends Command {
         const bee1 = interaction.options.getString('bee-1', true);
         const bee2 = interaction.options.getString('bee-2', true);
 
-        const qtyBee1 = user.bees[bee1] || 0;
-        const qtyBee2 = user.bees[bee2] || 0;
+        const qtyBee1 = user.bees.reduce(
+            (acc, bee) => acc + (bee.type === bee1 ? 1 : 0),
+            0,
+        );
+        const qtyBee2 = user.bees.reduce(
+            (acc, bee) => acc + (bee.type === bee2 ? 1 : 0),
+            0,
+        );
         if (
             (bee1 === bee2 && qtyBee1 < 2) ||
             (bee1 !== bee2 && (qtyBee1 < 1 || qtyBee2 < 1))

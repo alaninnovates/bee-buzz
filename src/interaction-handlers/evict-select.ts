@@ -6,6 +6,7 @@ import {
 import type { StringSelectMenuInteraction } from 'discord.js';
 import { getCustomIDParts } from '../lib/utils/interaction-utils';
 import { beeData } from '../lib/data/data';
+import { UserDocument } from '../lib/types';
 
 @ApplyOptions<InteractionHandler.Options>({
     name: 'evict-select',
@@ -28,9 +29,11 @@ export class HelpSelectHandler extends InteractionHandler {
     }
 
     public async run(interaction: StringSelectMenuInteraction) {
-        const user = await this.container.database.collection('hives').findOne({
-            userId: interaction.user.id,
-        });
+        const user = await this.container.database
+            .collection<UserDocument>('hives')
+            .findOne({
+                userId: interaction.user.id,
+            });
         if (!user) {
             await interaction.reply({
                 content:
@@ -38,25 +41,25 @@ export class HelpSelectHandler extends InteractionHandler {
             });
             return;
         }
-        const bee = interaction.values[0];
-        if (!user.bees[bee]) {
+        const beeIndex = parseInt(interaction.values[0], 10);
+        if (isNaN(beeIndex) || beeIndex < 0 || beeIndex >= user.bees.length) {
             await interaction.reply({
                 content: "You don't have that bee in your hive!",
             });
             return;
         }
-        user.bees[bee]--;
-        if (user.bees[bee] <= 0) {
-            delete user.bees[bee];
-        }
+        const newBees = [...user.bees];
+        const removed = newBees.splice(beeIndex, 1)[0];
         await this.container.database
             .collection('hives')
             .updateOne(
                 { userId: interaction.user.id },
-                { $set: { bees: user.bees } },
+                { $set: { bees: newBees } },
             );
         await interaction.reply({
-            content: `You evicted a ${beeData[bee].name} from your hive!`,
+            content: `You evicted a ${beeData[removed.type].name} (Level: ${
+                removed.level
+            }, XP: ${removed.xp}) from your hive!`,
         });
     }
 }

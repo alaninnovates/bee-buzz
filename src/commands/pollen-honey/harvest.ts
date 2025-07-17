@@ -7,6 +7,7 @@ import {
     secondsBetween,
     humanReadableTime,
 } from '../../lib/utils/date';
+import { ForageDocument, UserDocument } from '../../lib/types';
 
 @ApplyOptions<Command.Options>({
     name: 'harvest',
@@ -26,9 +27,11 @@ export class HarvestCommand extends Command {
     public override async chatInputRun(
         interaction: Command.ChatInputCommandInteraction,
     ) {
-        const user = await this.container.database.collection('hives').findOne({
-            userId: interaction.user.id,
-        });
+        const user = await this.container.database
+            .collection<UserDocument>('hives')
+            .findOne({
+                userId: interaction.user.id,
+            });
         if (!user) {
             await interaction.reply({
                 content:
@@ -37,7 +40,7 @@ export class HarvestCommand extends Command {
             return;
         }
         const forage = await this.container.database
-            .collection('forage')
+            .collection<ForageDocument>('forage')
             .findOne({
                 userId: interaction.user.id,
             });

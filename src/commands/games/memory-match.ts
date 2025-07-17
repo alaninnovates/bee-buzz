@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { Colors, EmbedBuilder } from 'discord.js';
 import { Item } from '../../lib/data/items';
+import { UserDocument } from '../../lib/types';
 
 // [min, max]
 const potentialItems: {
@@ -132,9 +133,11 @@ export class MemoryMatchCommand extends Command {
     public override async chatInputRun(
         interaction: Command.ChatInputCommandInteraction,
     ) {
-        const user = await this.container.database.collection('hives').findOne({
-            userId: interaction.user.id,
-        });
+        const user = await this.container.database
+            .collection<UserDocument>('hives')
+            .findOne({
+                userId: interaction.user.id,
+            });
         if (!user) {
             await interaction.reply({
                 content:
