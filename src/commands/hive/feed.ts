@@ -119,7 +119,9 @@ export class FeedCommand extends Command {
             components: [
                 new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
                     new StringSelectMenuBuilder()
-                        .setCustomId(`feed-select:${user.userId}`)
+                        .setCustomId(
+                            `feed-select:${user.userId}:${treatType}:${quantity}`,
+                        )
                         .setPlaceholder('Select a bee to feed')
                         .setOptions(
                             user.bees.map((bee, index) => ({
