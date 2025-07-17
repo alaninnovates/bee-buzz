@@ -1,8 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
-import { calculateForage, calculateHoney } from '../../lib/forage';
-import { minutesBetween } from '../../lib/date';
+import { calculateForage, calculateHoney } from '../../lib/data/forage';
+import { minutesBetween } from '../../lib/utils/date';
 
 @ApplyOptions<Command.Options>({
     name: 'harvest',

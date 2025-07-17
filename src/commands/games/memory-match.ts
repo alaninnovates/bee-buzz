@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { Colors, EmbedBuilder } from 'discord.js';
-import { Item } from '../../lib/caches/memory-match';
+import { Item } from '../../lib/data/items';
 
 // [min, max]
 const potentialItems: {

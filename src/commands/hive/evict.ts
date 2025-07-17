@@ -5,7 +5,7 @@ import {
     EmbedBuilder,
     StringSelectMenuBuilder,
 } from 'discord.js';
-import { beeData } from '../../lib/data';
+import { beeData } from '../../lib/data/data';
 
 @ApplyOptions<Command.Options>({
     name: 'evict',

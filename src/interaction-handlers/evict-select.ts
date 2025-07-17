@@ -4,8 +4,8 @@ import {
     InteractionHandlerTypes,
 } from '@sapphire/framework';
 import type { StringSelectMenuInteraction } from 'discord.js';
-import { getCustomIDParts } from '../lib/interaction-utils';
-import { beeData } from '../lib/data';
+import { getCustomIDParts } from '../lib/utils/interaction-utils';
+import { beeData } from '../lib/data/data';
 
 @ApplyOptions<InteractionHandler.Options>({
     name: 'evict-select',

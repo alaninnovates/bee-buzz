@@ -1,4 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { emojiReplacements, Item } from '../data/items';
 
 interface MemoryMatchBoardItem {
     item: Item;
@@ -18,21 +19,6 @@ interface MemoryMatchData {
     level: MemoryMatchLevel;
     triesRemaining: number;
 }
-
-export const emojiReplacements = {
-    treat: '🍬',
-    blueberry: '🫐',
-    pineapple: '🍍',
-    strawberry: '🍓',
-    kiwi: '🥝',
-    royalJelly: '🫙',
-    brick: '🧱',
-    silverEgg: '🩶',
-    goldEgg: '⭐',
-    diamondEgg: '💎',
-};
-
-export type Item = keyof typeof emojiReplacements;
 
 export class MemoryMatchCache {
     private cache: Map<string, MemoryMatchData>;

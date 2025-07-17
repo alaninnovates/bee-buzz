@@ -1,8 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
-import { beeData } from '../../lib/data';
-import { breedBees, calculateBreedCost } from '../../lib/breed';
+import { beeData } from '../../lib/data/data';
+import { breedBees, calculateBreedCost } from '../../lib/data/breed';
 
 @ApplyOptions<Command.Options>({
     name: 'breed',

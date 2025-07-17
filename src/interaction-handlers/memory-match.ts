@@ -4,8 +4,8 @@ import {
     InteractionHandlerTypes,
 } from '@sapphire/framework';
 import { ButtonStyle, type StringSelectMenuInteraction } from 'discord.js';
-import { getCustomIDParts } from '../lib/interaction-utils';
-import { emojiReplacements } from '../lib/caches/memory-match';
+import { getCustomIDParts } from '../lib/utils/interaction-utils';
+import { emojiReplacements } from '../lib/data/items';
 
 @ApplyOptions<InteractionHandler.Options>({
     name: 'memory-match',

@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { Colors, EmbedBuilder } from 'discord.js';
-import { beeData } from '../../lib/data';
+import { beeData } from '../../lib/data/data';
 import { defaultHiveLimit } from '../../lib/constants';
 
 @ApplyOptions<Command.Options>({

@@ -1,9 +1,9 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
-import { beeData } from '../../lib/data';
-import { calculateForage } from '../../lib/forage';
-import { minutesBetween } from '../../lib/date';
+import { beeData } from '../../lib/data/data';
+import { calculateForage } from '../../lib/data/forage';
+import { minutesBetween } from '../../lib/utils/date';
 
 @ApplyOptions<Command.Options>({
     name: 'check-hive',
