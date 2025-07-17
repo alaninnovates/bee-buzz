@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
-import { beeData } from '../../lib/data/data';
+import { beeData } from '../../lib/data/bee';
 import { breedBees, calculateBreedCost } from '../../lib/data/breed';
 import { UserDocument } from '../../lib/types';
 

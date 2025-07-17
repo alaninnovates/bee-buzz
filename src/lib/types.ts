@@ -1,5 +1,5 @@
 import { Document } from 'mongodb';
-import { beeData } from './data/data';
+import { beeData } from './data/bee';
 import { Item } from './data/items';
 
 export interface BeeInfo {

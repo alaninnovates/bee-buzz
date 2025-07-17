@@ -1,4 +1,4 @@
-import { Bee, rarityCost, beeData, breedData } from './data';
+import { Bee, rarityCost, beeData, breedData } from './bee';
 
 export const breedBees = (bee1: Bee, bee2: Bee): Bee | null => {
     const pairKey = [bee1, bee2].sort().join('+');

@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { beeData } from '../../lib/data/data';
+import { beeData } from '../../lib/data/bee';
 import {
     ActionRowBuilder,
     ButtonBuilder,

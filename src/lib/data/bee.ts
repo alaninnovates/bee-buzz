@@ -91,7 +91,10 @@ export const beeData = {
 };
 
 export const breedData = {
-    'worker+worker': [{ result: 'worker', chance: 1.0 }],
+    'worker+worker': [
+        { result: 'worker', chance: 0.8 },
+        { result: 'guard', chance: 0.2 },
+    ],
     'guard+guard': [{ result: 'guard', chance: 1.0 }],
     'speed+speed': [
         { result: 'speed', chance: 0.95 },

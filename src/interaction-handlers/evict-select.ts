@@ -10,7 +10,7 @@ import {
     type StringSelectMenuInteraction,
 } from 'discord.js';
 import { getCustomIDParts } from '../lib/utils/interaction-utils';
-import { beeData } from '../lib/data/data';
+import { beeData } from '../lib/data/bee';
 import { UserDocument } from '../lib/types';
 import { renderBeeText } from '../lib/render-hive';
 

@@ -1,4 +1,4 @@
-import { beeData } from './data/data';
+import { beeData } from './data/bee';
 import { BeeInfo } from './types';
 
 export const renderBeeText = (bees: BeeInfo[]) => {

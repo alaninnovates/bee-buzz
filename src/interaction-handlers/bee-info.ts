@@ -12,7 +12,7 @@ import {
     type StringSelectMenuInteraction,
 } from 'discord.js';
 import { getCustomIDParts } from '../lib/utils/interaction-utils';
-import { beeData } from '../lib/data/data';
+import { beeData } from '../lib/data/bee';
 
 export const getBeeDataEmbed = (bee: keyof typeof beeData) => {
     const data = beeData[bee];
