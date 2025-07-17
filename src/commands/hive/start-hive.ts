@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
 import { beeData } from '../../lib/data';
+import { defaultHiveLimit } from '../../lib/constants';
 
 @ApplyOptions<Command.Options>({
     name: 'start-hive',
@@ -29,6 +30,7 @@ export class StartHiveCommand extends Command {
             },
             honey: 0,
             createdAt: new Date(),
+            maxHiveSize: defaultHiveLimit,
         });
         await interaction.reply({
             embeds: [

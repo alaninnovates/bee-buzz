@@ -58,6 +58,19 @@ export class HarvestCommand extends Command {
             });
             return;
         }
+        if (Object.keys(user.bees).length >= user.maxHiveSize) {
+            await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle('🚫 Hive Limit Reached')
+                        .setDescription(
+                            `You can only have up to ${user.maxHiveSize} bees in your hive. Please either remove some with \`/evict\` or expand your hive with \`/expand-hive\`.`,
+                        )
+                        .setColor('#FF0000'),
+                ],
+            });
+            return;
+        }
         const bee1 = interaction.options.getString('bee-1', true);
         const bee2 = interaction.options.getString('bee-2', true);
 
