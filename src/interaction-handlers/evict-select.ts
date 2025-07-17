@@ -3,10 +3,55 @@ import {
     InteractionHandler,
     InteractionHandlerTypes,
 } from '@sapphire/framework';
-import type { StringSelectMenuInteraction } from 'discord.js';
+import {
+    ActionRowBuilder,
+    EmbedBuilder,
+    StringSelectMenuBuilder,
+    type StringSelectMenuInteraction,
+} from 'discord.js';
 import { getCustomIDParts } from '../lib/utils/interaction-utils';
 import { beeData } from '../lib/data/data';
 import { UserDocument } from '../lib/types';
+import { renderBeeText } from '../lib/render-hive';
+
+export const getEvictResponse = (user: UserDocument) => {
+    return {
+        embeds: [
+            new EmbedBuilder()
+                .setTitle('🚫 Evict a Bee')
+                .setDescription('Select what bee to evict.')
+                .addFields([
+                    {
+                        name: 'Bees',
+                        value: renderBeeText(user.bees),
+                    },
+                    {
+                        name: 'Hive Limit',
+                        value: `${Object.keys(user.bees).length}/${
+                            user.maxHiveSize
+                        } bees`,
+                    },
+                ])
+                .setColor('#FFD700'),
+        ],
+        components: [
+            new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+                new StringSelectMenuBuilder()
+                    .setCustomId(`evict-select:${user.userId}`)
+                    .setPlaceholder('Select a bee to evict')
+                    .setOptions(
+                        user.bees.map((bee, index) => ({
+                            label: beeData[bee.type].name,
+                            value: index.toString(),
+                            description: `Evict ${
+                                beeData[bee.type].name
+                            } (Level: ${bee.level}, XP: ${bee.xp})`,
+                        })),
+                    ),
+            ),
+        ],
+    };
+};
 
 @ApplyOptions<InteractionHandler.Options>({
     name: 'evict-select',
@@ -50,13 +95,17 @@ export class HelpSelectHandler extends InteractionHandler {
         }
         const newBees = [...user.bees];
         const removed = newBees.splice(beeIndex, 1)[0];
-        await this.container.database
-            .collection('hives')
-            .updateOne(
+        const newUser = (await this.container.database
+            .collection<UserDocument>('hives')
+            .findOneAndUpdate(
                 { userId: interaction.user.id },
                 { $set: { bees: newBees } },
-            );
-        await interaction.reply({
+                {
+                    returnDocument: 'after',
+                },
+            )) as UserDocument;
+        await interaction.update(getEvictResponse(newUser));
+        await interaction.followUp({
             content: `You evicted a ${beeData[removed.type].name} (Level: ${
                 removed.level
             }, XP: ${removed.xp}) from your hive!`,

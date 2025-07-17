@@ -1,13 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import {
-    ActionRowBuilder,
-    EmbedBuilder,
-    StringSelectMenuBuilder,
-} from 'discord.js';
-import { beeData } from '../../lib/data/data';
 import { UserDocument } from '../../lib/types';
-import { renderBeeText } from '../../lib/render-hive';
+import { getEvictResponse } from '../../interaction-handlers/evict-select';
 
 @ApplyOptions<Command.Options>({
     name: 'evict',
@@ -39,41 +33,6 @@ export class EvictCommand extends Command {
             });
             return;
         }
-        const embed = new EmbedBuilder()
-            .setTitle('🚫 Evict a Bee')
-            .setDescription('Select what bee to evict.')
-            .addFields([
-                {
-                    name: 'Bees',
-                    value: renderBeeText(user.bees),
-                },
-                {
-                    name: 'Hive Limit',
-                    value: `${Object.keys(user.bees).length}/${
-                        user.maxHiveSize
-                    } bees`,
-                },
-            ])
-            .setColor('#FFD700');
-
-        await interaction.reply({
-            embeds: [embed],
-            components: [
-                new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-                    new StringSelectMenuBuilder()
-                        .setCustomId(`evict-select:${interaction.user.id}`)
-                        .setPlaceholder('Select a bee to evict')
-                        .setOptions(
-                            user.bees.map((bee, index) => ({
-                                label: beeData[bee.type].name,
-                                value: index.toString(),
-                                description: `Evict ${
-                                    beeData[bee.type].name
-                                } (Level: ${bee.level}, XP: ${bee.xp})`,
-                            })),
-                        ),
-                ),
-            ],
-        });
+        await interaction.reply(getEvictResponse(user));
     }
 }
