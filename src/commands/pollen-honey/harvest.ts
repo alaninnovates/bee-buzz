@@ -2,7 +2,11 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
 import { calculateForage, calculateHoney } from '../../lib/data/forage';
-import { minutesBetween } from '../../lib/utils/date';
+import {
+    minutesBetween,
+    secondsBetween,
+    humanReadableTime,
+} from '../../lib/utils/date';
 
 @ApplyOptions<Command.Options>({
     name: 'harvest',
@@ -62,7 +66,11 @@ export class HarvestCommand extends Command {
             embeds: [
                 new EmbedBuilder()
                     .setTitle('🏆 Honey Harvested!')
-                    .setDescription('Buzz buzz! Your hive just produced:')
+                    .setDescription(
+                        `Buzz buzz! Your bees spent ${humanReadableTime(
+                            secondsBetween(forage.startedAt, new Date()),
+                        )} foraging and produced honey. Your hive just produced:`,
+                    )
                     .addFields([
                         {
                             name: 'Pollen Used',

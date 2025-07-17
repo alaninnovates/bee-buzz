@@ -1,6 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
+import { calculateForage } from '../../lib/data/forage';
 
 @ApplyOptions<Command.Options>({
     name: 'forage',
@@ -58,16 +59,16 @@ export class ForageCommand extends Command {
                 new EmbedBuilder()
                     .setTitle('🍃 Foraging Started!')
                     .setDescription(
-                        `${user.bees.worker} Worker Bees sent to the wildflower fields.`,
+                        `${user.bees.worker} Worker Bees sent to the wildflower fields. To finish foraging, use the \`/harvest\` command.`,
                     )
                     .addFields([
                         {
-                            name: 'Time',
-                            value: '10 mins',
-                        },
-                        {
                             name: 'Bees Foraging',
                             value: '🐝'.repeat(user.bees.worker),
+                        },
+                        {
+                            name: 'Est Pollen Per Minute',
+                            value: calculateForage(user.bees).toString(),
                         },
                     ])
                     .setFooter({
