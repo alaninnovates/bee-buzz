@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
 import { calculateForage } from '../../lib/data/forage';
+import { beeData } from '../../lib/data/data';
 
 @ApplyOptions<Command.Options>({
     name: 'forage',
@@ -64,7 +65,15 @@ export class ForageCommand extends Command {
                     .addFields([
                         {
                             name: 'Bees Foraging',
-                            value: '🐝'.repeat(user.bees.worker),
+                            value: Object.keys(user.bees)
+                                .map((bee) => {
+                                    const data =
+                                        beeData[bee as keyof typeof beeData];
+                                    return `${data.emoji} ${user.bees[bee]} ${
+                                        data.name
+                                    }${user.bees[bee] > 1 ? 's' : ''}`;
+                                })
+                                .join(' | '),
                         },
                         {
                             name: 'Est Pollen Per Minute',
