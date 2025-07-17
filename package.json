@@ -2,7 +2,11 @@
     "name": "bee-buzz",
     "version": "1.0.0",
     "main": "dist/index.js",
-    "scripts": {},
+    "scripts": {
+        "watch": "tsc --watch",
+        "build": "tsc",
+        "start": "node dist/index.js"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
