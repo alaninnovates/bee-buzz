@@ -103,9 +103,6 @@ export class BreedCommand extends Command {
         }
 
         const cost = calculateBreedCost(bee1, bee2);
-        console.log(
-            `Breeding ${bee1} and ${bee2} costs ${cost} honey, user has ${user.honey}`,
-        );
         if ((user.honey || 0) < cost) {
             await interaction.reply({
                 embeds: [
@@ -136,15 +133,23 @@ export class BreedCommand extends Command {
             return;
         }
 
-        await this.container.database.collection('hives').updateOne(
-            { userId: interaction.user.id },
-            {
-                $inc: {
-                    [`bees.${newBee}`]: 1,
-                    honey: -cost,
+        await this.container.database
+            .collection<UserDocument>('hives')
+            .updateOne(
+                { userId: interaction.user.id },
+                {
+                    $inc: {
+                        honey: -cost,
+                    },
+                    $push: {
+                        bees: {
+                            type: newBee,
+                            level: 1,
+                            xp: 0,
+                        } as any,
+                    },
                 },
-            },
-        );
+            );
 
         await interaction.reply({
             embeds: [
