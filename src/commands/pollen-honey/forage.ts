@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
-import { calculateForage } from '../../lib/data/forage';
+import { calculateForage, calculateMaxForageTime } from '../../lib/data/forage';
 import { ForageDocument, UserDocument } from '../../lib/types';
 import { renderBeeText } from '../../lib/render-hive';
 
@@ -55,6 +55,8 @@ export class ForageCommand extends Command {
         }
         await this.container.database.collection('forage').insertOne({
             userId: interaction.user.id,
+            channelId: interaction.channelId,
+            notified: false,
             bees: user.bees,
             startedAt: new Date(),
         });
@@ -73,10 +75,16 @@ export class ForageCommand extends Command {
                         {
                             name: 'Est Pollen Per Minute',
                             value: calculateForage(user.bees).toString(),
+                            inline: true,
+                        },
+                        {
+                            name: 'Max Forage Time',
+                            value: calculateMaxForageTime(user.bees).toString(),
+                            inline: true,
                         },
                     ])
                     .setFooter({
-                        text: 'Tip: Upgrade your bees to forage faster!',
+                        text: 'Tip: Level up and breed your bees to forage faster!',
                     })
                     .setColor('#FFD700'),
             ],

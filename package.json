@@ -11,6 +11,7 @@
         "@sapphire/decorators": "^6.2.0",
         "@sapphire/discord.js-utilities": "^7.3.3",
         "@sapphire/framework": "^5.3.6",
+        "@sapphire/plugin-scheduled-tasks": "^10.0.3",
         "@sapphire/utilities": "^3.18.2",
         "common-tags": "^1.8.2",
         "discord.js": "^14.21.0",

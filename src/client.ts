@@ -1,3 +1,4 @@
+import '@sapphire/plugin-scheduled-tasks/register';
 import { container, SapphireClient } from '@sapphire/framework';
 import { GatewayIntentBits } from 'discord.js';
 import { createClient } from './lib/db';
@@ -8,6 +9,11 @@ export class Client extends SapphireClient {
     public constructor() {
         super({
             intents: [GatewayIntentBits.Guilds],
+            tasks: {
+                bull: {
+                    connection: {},
+                },
+            },
         });
     }
 

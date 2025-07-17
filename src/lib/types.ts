@@ -22,6 +22,8 @@ export interface UserDocument extends Document {
 
 export interface ForageDocument extends Document {
     userId: string;
+    channelId: string;
+    notified: boolean;
     bees: BeeInfo[];
     startedAt: Date;
 }

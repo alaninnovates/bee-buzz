@@ -1,13 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { beeData } from '../../lib/data/bee';
-import {
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle,
-    Colors,
-    EmbedBuilder,
-} from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { getBeeDataEmbed } from '../../interaction-handlers/bee-info';
 
 @ApplyOptions<Command.Options>({

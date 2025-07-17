@@ -63,3 +63,9 @@ export const calculateHoney = (pollenQuantity: number, bees: BeeInfo[]) => {
     const specialNectar = Math.random() < specialNectarChance;
     return specialNectar ? honey * specialNectarChance * 2 : honey;
 };
+
+export const calculateMaxForageTime = (bees: BeeInfo[]) => {
+    const pollenPerMinute = calculateForage(bees);
+    const maxForageTime = Math.floor((60 * 60) / pollenPerMinute);
+    return Math.max(maxForageTime, 60);
+};
