@@ -31,7 +31,7 @@ export const beeData = {
         name: 'Guard Bee',
         emoji: '🦸‍♂️',
         rarity: 'Uncommon',
-        description: 'Protects your hive from raids and boosts forager speed.',
+        description: 'Protects your hive from bosses and boosts forager speed.',
         ability: {
             name: 'Hive Defender',
             effect: 'Repels attacks, +5% worker bee efficiency',
@@ -61,20 +61,20 @@ export const beeData = {
         name: 'Chill Bee',
         emoji: '❄️',
         rarity: 'Epic',
-        description: 'Keeps things cool — slows down rival raids.',
+        description: 'Keeps things cool — slows down bosses.',
         ability: {
             name: 'Frost Aura',
-            effect: '-15% damage from raids',
+            effect: '-15% damage from bosses',
         },
     },
     fire: {
         name: 'Fire Bee',
         emoji: '🔥',
         rarity: 'Legendary',
-        description: 'Aggressive bee that can raid other hives.',
+        description: 'Aggressive bee that can attack bosses.',
         ability: {
             name: 'Scorched Earth',
-            effect: '+30% success on raids',
+            effect: '+30% success on bosses',
         },
     },
 } as {

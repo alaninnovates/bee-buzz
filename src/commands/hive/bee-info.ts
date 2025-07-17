@@ -1,7 +1,14 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { beeData } from '../../lib/data/data';
-import { Colors, EmbedBuilder } from 'discord.js';
+import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    Colors,
+    EmbedBuilder,
+} from 'discord.js';
+import { getBeeDataEmbed } from '../../interaction-handlers/bee-info';
 
 @ApplyOptions<Command.Options>({
     name: 'bee-info',
@@ -18,7 +25,7 @@ export class BeeInfoCommand extends Command {
                         option
                             .setName('bee')
                             .setDescription('The bee to get information about')
-                            .setRequired(true)
+                            .setRequired(false)
                             .setChoices(
                                 ...Object.entries(beeData).map(
                                     ([key, value]) => ({
@@ -37,35 +44,29 @@ export class BeeInfoCommand extends Command {
     public override async chatInputRun(
         interaction: Command.ChatInputCommandInteraction,
     ) {
-        const bee = interaction.options.getString('bee', true);
-        const data = beeData[bee as keyof typeof beeData];
-
-        if (!data) {
+        const bee = interaction.options.getString('bee', false);
+        if (!bee) {
             await interaction.reply({
-                content: "This bee doesn't exist!",
-                ephemeral: true,
+                embeds: [getBeeDataEmbed(Object.keys(beeData)[0])],
+                components: [
+                    new ActionRowBuilder<ButtonBuilder>().addComponents(
+                        new ButtonBuilder()
+                            .setStyle(ButtonStyle.Primary)
+                            .setEmoji('⬅️')
+                            .setCustomId('bee-info:0')
+                            .setDisabled(true),
+                        new ButtonBuilder()
+                            .setStyle(ButtonStyle.Primary)
+                            .setEmoji('➡️')
+                            .setCustomId(`bee-info:1`),
+                    ),
+                ],
             });
             return;
         }
 
         await interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setTitle(`${data.emoji} ${data.name}`)
-                    .setDescription(data.description)
-                    .addFields([
-                        {
-                            name: 'Rarity',
-                            value: data.rarity,
-                            inline: true,
-                        },
-                        {
-                            name: `Ability - ${data.ability.name}`,
-                            value: data.ability.effect,
-                        },
-                    ])
-                    .setColor(Colors.Yellow),
-            ],
+            embeds: [getBeeDataEmbed(bee as keyof typeof beeData)],
         });
     }
 }
