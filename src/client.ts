@@ -11,7 +11,9 @@ export class Client extends SapphireClient {
             intents: [GatewayIntentBits.Guilds],
             tasks: {
                 bull: {
-                    connection: {},
+                    connection: {
+                        url: process.env.REDIS_URL,
+                    },
                 },
             },
         });
