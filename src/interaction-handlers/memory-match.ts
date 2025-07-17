@@ -3,7 +3,7 @@ import {
     InteractionHandler,
     InteractionHandlerTypes,
 } from '@sapphire/framework';
-import type { StringSelectMenuInteraction } from 'discord.js';
+import { ButtonStyle, type StringSelectMenuInteraction } from 'discord.js';
 import { getCustomIDParts } from '../lib/interaction-utils';
 
 @ApplyOptions<InteractionHandler.Options>({
@@ -35,6 +35,55 @@ export class HelpSelectHandler extends InteractionHandler {
         );
         board[xCoord][yCoord].active = true;
         this.container.caches.memoryMatch.setBoard(interaction.user.id, board);
+
+        const quantityActive = board
+            .flat()
+            .filter((cell) => cell.active && !cell.matched).length;
+        if (quantityActive === 2) {
+            const activeCells = board
+                .flat()
+                .filter((cell) => cell.active && !cell.matched);
+            await interaction.update({
+                components: this.container.caches.memoryMatch
+                    .getBoardComponents(interaction.user.id)
+                    .map((row, i) =>
+                        row.setComponents(
+                            row.components.map((component, j) => {
+                                component.setDisabled(true);
+                                if (
+                                    !board[i][j].matched &&
+                                    board[i][j].active &&
+                                    activeCells[0].item !== activeCells[1].item
+                                ) {
+                                    component.setStyle(ButtonStyle.Danger);
+                                }
+                                return component;
+                            }),
+                        ),
+                    ),
+            });
+            if (activeCells[0].item === activeCells[1].item) {
+                activeCells.forEach((cell) => {
+                    cell.matched = true;
+                    cell.active = false;
+                });
+            } else {
+                activeCells.forEach((cell) => (cell.active = false));
+            }
+            this.container.caches.memoryMatch.setBoard(
+                interaction.user.id,
+                board,
+            );
+            setTimeout(() => {
+                interaction.editReply({
+                    components:
+                        this.container.caches.memoryMatch.getBoardComponents(
+                            interaction.user.id,
+                        ),
+                });
+            }, 1000);
+            return;
+        }
         await interaction.update({
             components: this.container.caches.memoryMatch.getBoardComponents(
                 interaction.user.id,
