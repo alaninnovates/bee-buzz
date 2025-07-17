@@ -74,7 +74,9 @@ export class HarvestCommand extends Command {
                     .setTitle('🏆 Honey Harvested!')
                     .setDescription(
                         `Buzz buzz! Your bees spent ${humanReadableTime(
-                            elapsed > maxForageTime ? maxForageTime : elapsed,
+                            (elapsed > maxForageTime
+                                ? maxForageTime
+                                : elapsed) * 60,
                         )} foraging and produced honey. Your hive just produced:`,
                     )
                     .addFields([
