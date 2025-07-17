@@ -87,6 +87,39 @@ export class HelpSelectHandler extends InteractionHandler {
             );
 
             if (mmData.triesRemaining <= 0) {
+                const recievedItems =
+                    this.container.caches.memoryMatch.getRecievedItems(
+                        interaction.user.id,
+                    );
+                if (recievedItems.length > 0) {
+                    const itemsList = recievedItems
+                        .map(
+                            (item) =>
+                                `- ${emojiReplacements[item.item]} ${
+                                    item.amount
+                                }`,
+                        )
+                        .join('\n');
+                    newEmbed.description = `Congratulations! Here are your rewards:\n${itemsList}`;
+                    const user = await this.container.database
+                        .collection('hives')
+                        .findOne({
+                            userId: interaction.user.id,
+                        });
+                    if (user) {
+                        const newItems = user.items || {};
+                        recievedItems.forEach((item) => {
+                            newItems[item.item] =
+                                (newItems[item.item] || 0) + item.amount;
+                        });
+                        await this.container.database
+                            .collection('hives')
+                            .updateOne(
+                                { userId: interaction.user.id },
+                                { $set: { items: newItems } },
+                            );
+                    }
+                }
                 await interaction.editReply({
                     embeds: [newEmbed],
                     components: this.container.caches.memoryMatch

@@ -1,9 +1,14 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { Colors, EmbedBuilder } from 'discord.js';
+import { Item } from '../../lib/caches/memory-match';
 
 // [min, max]
-const potentialItems = {
+const potentialItems: {
+    [key in 'regular' | 'mega' | 'extreme']: Partial<{
+        [item in Item]: [number, number];
+    }>;
+} = {
     regular: {
         treat: [10, 20],
         blueberry: [2, 3],
@@ -33,7 +38,13 @@ const potentialItems = {
     },
 };
 
-const eggPotentials = {
+const eggPotentials: {
+    [key in 'regular' | 'mega' | 'extreme']: {
+        silver: number;
+        gold: number;
+        diamond: number;
+    };
+} = {
     regular: {
         silver: 0.1,
         gold: 0.05,
@@ -51,16 +62,18 @@ const eggPotentials = {
     },
 };
 
-const getItems = (level: 'regular' | 'mega' | 'extreme') => {
+const getItems = (
+    level: 'regular' | 'mega' | 'extreme',
+): { item: Item; amount: number }[] => {
     const potItems = potentialItems[level];
     const eggPot = eggPotentials[level];
     const amounts = Object.entries(potItems)
         .map(([item, [min, max]]) => ({
-            item,
+            item: item as Item,
             amount: Math.floor(Math.random() * (max - min + 1)) + min,
         }))
         .filter(({ amount }) => amount > 0);
-    const items = [];
+    const items: { item: Item; amount: number }[] = [];
     while (items.length < 6 && amounts.length > 0) {
         const randomIndex = Math.floor(Math.random() * amounts.length);
         const item = amounts.splice(randomIndex, 1)[0];

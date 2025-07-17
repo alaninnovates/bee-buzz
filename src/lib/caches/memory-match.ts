@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 
 interface MemoryMatchBoardItem {
-    item: keyof typeof emojiReplacements;
+    item: Item;
     active: boolean;
     matched: boolean;
 }
@@ -11,7 +11,7 @@ type MemoryMatchLevel = 'regular' | 'mega' | 'extreme';
 
 interface MemoryMatchData {
     data: {
-        item: string;
+        item: Item;
         amount: number;
     }[];
     board: MemoryMatchBoard;
@@ -32,6 +32,8 @@ export const emojiReplacements = {
     diamondEgg: '💎',
 };
 
+export type Item = keyof typeof emojiReplacements;
+
 export class MemoryMatchCache {
     private cache: Map<string, MemoryMatchData>;
 
@@ -40,7 +42,7 @@ export class MemoryMatchCache {
     }
 
     private generateBoard(
-        items: { item: string; amount: number }[],
+        items: { item: Item; amount: number }[],
     ): MemoryMatchBoard {
         // put each of the items in a 2D array twice, dimension 3x4
         const itemList = [...items, ...items].map((i) => i.item);
@@ -49,7 +51,7 @@ export class MemoryMatchCache {
             const j = Math.floor(Math.random() * (i + 1));
             [itemList[i], itemList[j]] = [itemList[j], itemList[i]];
         }
-        const board: string[][] = [];
+        const board: Item[][] = [];
         for (let i = 0; i < 3; i++) {
             board.push(itemList.slice(i * 4, i * 4 + 4));
         }
@@ -65,7 +67,7 @@ export class MemoryMatchCache {
     public add(
         userId: string,
         data: {
-            item: string;
+            item: Item;
             amount: number;
         }[],
         level: MemoryMatchLevel,
@@ -123,9 +125,7 @@ export class MemoryMatchCache {
                         .setCustomId(`memory-match:${userId}:${i}:${j}`)
                         .setEmoji(
                             item.active || item.matched
-                                ? emojiReplacements[
-                                      item.item as keyof typeof emojiReplacements
-                                  ]
+                                ? emojiReplacements[item.item as Item]
                                 : '❓',
                         )
                         .setStyle(
@@ -139,5 +139,20 @@ export class MemoryMatchCache {
                 ),
             ),
         );
+    }
+
+    public getRecievedItems(userId: string): { item: Item; amount: number }[] {
+        const entry = this.cache.get(userId);
+        if (!entry) {
+            throw new Error('No memory match game found for this user.');
+        }
+        const receivedItems = [
+            ...new Set(
+                entry.board.flatMap((row) =>
+                    row.filter((cell) => cell.matched).map((cell) => cell.item),
+                ),
+            ),
+        ];
+        return entry.data.filter((item) => receivedItems.includes(item.item));
     }
 }
