@@ -14,8 +14,9 @@ export const beeData = {
         description: 'The leader of the hive. Increases breeding speed.',
         ability: {
             name: 'Royal Presence',
-            effect: '+20% breeding rate',
+            effect: '+20% breeding rate, +10% honey production',
         },
+        specialNectarChance: 0.1,
     },
     worker: {
         name: 'Worker Bee',
@@ -26,6 +27,7 @@ export const beeData = {
             name: 'Steady Forager',
             effect: '+1 pollen per minute',
         },
+        specialNectarChance: 0.05,
     },
     guard: {
         name: 'Guard Bee',
@@ -36,6 +38,7 @@ export const beeData = {
             name: 'Hive Defender',
             effect: 'Repels attacks, +5% worker bee efficiency',
         },
+        specialNectarChance: 0.02,
     },
     rainbow: {
         name: 'Rainbow Bee',
@@ -46,16 +49,19 @@ export const beeData = {
             name: 'Lucky Forager',
             effect: '+10% chance to find special nectar',
         },
+        specialNectarChance: 0.15,
     },
     speed: {
         name: 'Speed Bee',
         emoji: '⚡️',
         rarity: 'Rare',
-        description: 'Fast scout bee that doubles pollen collection speed.',
+        description:
+            'Fast scout bee that increases pollen collection speed across all bees.',
         ability: {
             name: 'Quick Buzz',
-            effect: '+50% pollen gathering speed',
+            effect: '+30% pollen gathering speed',
         },
+        specialNectarChance: 0.1,
     },
     chill: {
         name: 'Chill Bee',
@@ -66,6 +72,7 @@ export const beeData = {
             name: 'Frost Aura',
             effect: '-15% damage from bosses',
         },
+        specialNectarChance: 0.05,
     },
     fire: {
         name: 'Fire Bee',
@@ -76,6 +83,7 @@ export const beeData = {
             name: 'Scorched Earth',
             effect: '+30% success on bosses',
         },
+        specialNectarChance: 0.02,
     },
 } as {
     [key: string]: {
@@ -87,6 +95,7 @@ export const beeData = {
             name: string;
             effect: string;
         };
+        specialNectarChance: number;
     };
 };
 

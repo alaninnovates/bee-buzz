@@ -76,7 +76,7 @@ export class HarvestCommand extends Command {
                     )
                     .addFields([
                         {
-                            name: 'Pollen Used',
+                            name: 'Pollen Collected',
                             value: `🌼 ${pollen}`,
                         },
                         {
