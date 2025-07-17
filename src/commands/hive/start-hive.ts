@@ -47,6 +47,7 @@ export class StartHiveCommand extends Command {
                 worker: 3,
             },
             honey: 0,
+            items: {},
             createdAt: new Date(),
             maxHiveSize: defaultHiveLimit,
         });
