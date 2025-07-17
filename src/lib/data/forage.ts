@@ -1,5 +1,6 @@
 import { BeeInfo } from '../types';
-import { beeData } from './bee';
+import { beeData, rarityTreatData } from './bee';
+import { Item } from './items';
 
 const basePollenPerMinute = 3;
 
@@ -68,4 +69,33 @@ export const calculateMaxForageTime = (bees: BeeInfo[]) => {
     const pollenPerMinute = calculateForage(bees);
     const maxForageTime = Math.floor((60 * 60) / pollenPerMinute);
     return Math.max(maxForageTime, 60);
+};
+
+const treats: Item[] = [
+    'treat',
+    'blueberry',
+    'pineapple',
+    'strawberry',
+    'kiwi',
+];
+
+export const calculateTreatsEarned = (
+    elapsedTimeSeconds: number,
+    bees: BeeInfo[],
+) => {
+    const treatsEarned: Partial<{
+        [key in Item]: number;
+    }> = {};
+    for (const bee of bees) {
+        const rand = Math.random();
+        const data = rarityTreatData[beeData[bee.type].rarity];
+        if (rand < data.chance) {
+            const treatIndex = Math.floor(Math.random() * treats.length);
+            const treat = treats[treatIndex];
+            treatsEarned[treat] =
+                (treatsEarned[treat] || 0) +
+                Math.ceil(elapsedTimeSeconds / (60 * 5)) * data.multiplier;
+        }
+    }
+    return treatsEarned;
 };

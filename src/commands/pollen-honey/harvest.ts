@@ -5,9 +5,11 @@ import {
     calculateForage,
     calculateHoney,
     calculateMaxForageTime,
+    calculateTreatsEarned,
 } from '../../lib/data/forage';
 import { humanReadableTime, minutesBetween } from '../../lib/utils/date';
 import { ForageDocument, UserDocument } from '../../lib/types';
+import { emojiReplacements, Item } from '../../lib/data/items';
 
 @ApplyOptions<Command.Options>({
     name: 'harvest',
@@ -56,12 +58,41 @@ export class HarvestCommand extends Command {
         const elapsed = minutesBetween(forage.startedAt, new Date());
         const pollen =
             ppm * (elapsed > maxForageTime ? maxForageTime : elapsed);
+        const durationSeconds =
+            (elapsed > maxForageTime ? maxForageTime : elapsed) * 60;
         const honey = calculateHoney(pollen, forage.bees);
+
+        const treatsEarned = calculateTreatsEarned(durationSeconds, user.bees);
+        let newItems = user.items;
+        let addtlFields = [];
+        if (Object.keys(treatsEarned).length > 0) {
+            for (const [treat, amount] of Object.entries(treatsEarned)) {
+                newItems[treat as Item] =
+                    (newItems[treat as Item] || 0) + amount;
+            }
+            addtlFields.push({
+                name: 'Treats Earned',
+                value: `Your bees found some treats while foraging! You received:\n${Object.entries(
+                    treatsEarned,
+                )
+                    .map(
+                        ([treat, amount]) =>
+                            `${emojiReplacements[treat as Item]} ${amount}x ${
+                                treat.charAt(0).toUpperCase() + treat.slice(1)
+                            }`,
+                    )
+                    .join(' | ')}`,
+                inline: false,
+            });
+        }
         await this.container.database.collection('hives').updateOne(
             { userId: interaction.user.id },
             {
                 $inc: {
                     honey,
+                },
+                $set: {
+                    items: newItems,
                 },
             },
         );
@@ -74,9 +105,7 @@ export class HarvestCommand extends Command {
                     .setTitle('🏆 Honey Harvested!')
                     .setDescription(
                         `Buzz buzz! Your bees spent ${humanReadableTime(
-                            (elapsed > maxForageTime
-                                ? maxForageTime
-                                : elapsed) * 60,
+                            durationSeconds,
                         )} foraging and produced honey. Your hive just produced:`,
                     )
                     .addFields([
@@ -92,6 +121,7 @@ export class HarvestCommand extends Command {
                             name: 'Total Honey',
                             value: `🍯 ${user.honey + honey} jars`,
                         },
+                        ...addtlFields,
                     ])
                     .setFooter({
                         text: 'Keep those Worker Bees busy!',

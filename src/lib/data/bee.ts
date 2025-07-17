@@ -180,6 +180,38 @@ export const rarityCost = {
     [key in Rarity]: number;
 };
 
+export const rarityTreatData = {
+    Unique: {
+        chance: 0.05,
+        multiplier: 1000,
+    },
+    Common: {
+        chance: 0.02,
+        multiplier: 1,
+    },
+    Uncommon: {
+        chance: 0.05,
+        multiplier: 5,
+    },
+    Rare: {
+        chance: 0.1,
+        multiplier: 10,
+    },
+    Epic: {
+        chance: 0.3,
+        multiplier: 25,
+    },
+    Legendary: {
+        chance: 0.5,
+        multiplier: 50,
+    },
+} as {
+    [key in Rarity]: {
+        chance: number;
+        multiplier: number;
+    };
+};
+
 export const xpPerLevel = {
     1: 0,
     2: 10,
