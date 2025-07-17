@@ -17,8 +17,10 @@ export const pages = {
             stripIndents`
 ▸ \`/start-hive\` - Create your first hive  
 ▸ \`/check-hive\` - View your hive's status  
-▸ \`/expand-hive\` - Upgrade your hive chambers  
-▸ \`/breed [bee1] [bee2]\` - Combine bees to hatch new ones  
+▸ \`/expand-hive\` - Add more space to your hive  
+▸ \`/breed [bee1] [bee2]\` - Combine bees to hatch new ones
+▸ \`/evict\` - Remove a bee from your hive
+▸ \`/feed [treat-type] <quantity>\` - Feed your bees treats
 ▸ \`/bee-info [bee name]\` - See details & stats of any bee
 
 [] = Optional | <> = Required
@@ -36,10 +38,20 @@ export const pages = {
 `,
         )
         .setColor(Colors.Orange),
+    games: new EmbedBuilder().setTitle('🎮 Games').setDescription(
+        stripIndents`
+▸ \`/memory-match [difficulty]\` - Play a memory matching game to get prizes!
+▸ \`/upgrade\` - Upgrade your game passes
+
+[] = Optional | <> = Required
+        `,
+    ),
     other: new EmbedBuilder()
         .setTitle(':honeybee: Other Commands')
         .setDescription(
             stripIndents`
+▸ \`/leaderboard\` - View the top people for honey
+▸ \`/inventory\` - View your items
 ▸ \`/help\` - View this help menu
 
 [] = Optional | <> = Required
@@ -60,6 +72,10 @@ export const menuData = {
     'pollen-honey': {
         emoji: '🌸',
         name: 'Pollen & Honey',
+    },
+    games: {
+        emoji: '🎮',
+        name: 'Games',
     },
     other: {
         emoji: '🐝',
