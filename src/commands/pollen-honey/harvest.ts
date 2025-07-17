@@ -1,7 +1,11 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { EmbedBuilder } from 'discord.js';
-import { calculateForage, calculateHoney } from '../../lib/data/forage';
+import {
+    calculateForage,
+    calculateHoney,
+    calculateMaxForageTime,
+} from '../../lib/data/forage';
 import {
     minutesBetween,
     secondsBetween,
@@ -52,7 +56,10 @@ export class HarvestCommand extends Command {
             return;
         }
         const ppm = calculateForage(forage.bees);
-        const pollen = minutesBetween(forage.startedAt, new Date()) * ppm;
+        const maxForageTime = calculateMaxForageTime(forage.bees);
+        const elapsed = minutesBetween(forage.startedAt, new Date());
+        const pollen =
+            ppm * (elapsed > maxForageTime ? maxForageTime : elapsed);
         const honey = calculateHoney(pollen, forage.bees);
         await this.container.database.collection('hives').updateOne(
             { userId: interaction.user.id },
@@ -71,7 +78,7 @@ export class HarvestCommand extends Command {
                     .setTitle('🏆 Honey Harvested!')
                     .setDescription(
                         `Buzz buzz! Your bees spent ${humanReadableTime(
-                            secondsBetween(forage.startedAt, new Date()),
+                            elapsed > maxForageTime ? maxForageTime : elapsed,
                         )} foraging and produced honey. Your hive just produced:`,
                     )
                     .addFields([

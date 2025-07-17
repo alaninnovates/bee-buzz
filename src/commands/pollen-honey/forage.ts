@@ -4,6 +4,7 @@ import { EmbedBuilder } from 'discord.js';
 import { calculateForage, calculateMaxForageTime } from '../../lib/data/forage';
 import { ForageDocument, UserDocument } from '../../lib/types';
 import { renderBeeText } from '../../lib/render-hive';
+import { humanReadableTime } from '../../lib/utils/date';
 
 @ApplyOptions<Command.Options>({
     name: 'forage',
@@ -79,7 +80,9 @@ export class ForageCommand extends Command {
                         },
                         {
                             name: 'Max Forage Time',
-                            value: calculateMaxForageTime(user.bees).toString(),
+                            value: humanReadableTime(
+                                calculateMaxForageTime(user.bees),
+                            ),
                             inline: true,
                         },
                     ])
