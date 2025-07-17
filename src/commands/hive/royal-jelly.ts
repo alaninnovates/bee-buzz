@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { EmbedBuilder } from 'discord.js';
+// import { EmbedBuilder } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
     name: 'royal-jelly',
@@ -17,7 +17,7 @@ export class RoyalJellyCommand extends Command {
         );
     }
 
-    public override async chatInputRun(
-        interaction: Command.ChatInputCommandInteraction,
-    ) {}
+    // public override async chatInputRun(
+    //     interaction: Command.ChatInputCommandInteraction,
+    // ) {}
 }
