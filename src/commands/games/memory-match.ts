@@ -151,7 +151,7 @@ export class MemoryMatchCommand extends Command {
             return;
         }
         const items = getItems(level);
-        this.container.caches.memoryMatch.add(
+        const mmData = this.container.caches.memoryMatch.add(
             interaction.user.id,
             items,
             level,
@@ -161,7 +161,10 @@ export class MemoryMatchCommand extends Command {
                 new EmbedBuilder()
                     .setTitle('🧠 Memory Match')
                     .setDescription(`Try to match as many pairs as possible!`)
-                    .setColor(Colors.Blue),
+                    .setColor(Colors.Blue)
+                    .setFooter({
+                        text: `Tries Remaining: ${mmData.triesRemaining}`,
+                    }),
             ],
             components: this.container.caches.memoryMatch.getBoardComponents(
                 interaction.user.id,

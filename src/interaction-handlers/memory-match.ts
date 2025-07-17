@@ -5,6 +5,7 @@ import {
 } from '@sapphire/framework';
 import { ButtonStyle, type StringSelectMenuInteraction } from 'discord.js';
 import { getCustomIDParts } from '../lib/interaction-utils';
+import { emojiReplacements } from '../lib/caches/memory-match';
 
 @ApplyOptions<InteractionHandler.Options>({
     name: 'memory-match',
@@ -36,14 +37,24 @@ export class HelpSelectHandler extends InteractionHandler {
         board[xCoord][yCoord].active = true;
         this.container.caches.memoryMatch.setBoard(interaction.user.id, board);
 
+        const mmData = this.container.caches.memoryMatch.get(
+            interaction.user.id,
+        );
+
         const quantityActive = board
             .flat()
             .filter((cell) => cell.active && !cell.matched).length;
         if (quantityActive === 2) {
+            mmData.triesRemaining--;
+            this.container.caches.memoryMatch.set(interaction.user.id, mmData);
+            const newEmbed = interaction.message.embeds[0].toJSON();
+            newEmbed.footer!.text = `Tries Remaining: ${mmData.triesRemaining}`;
+
             const activeCells = board
                 .flat()
                 .filter((cell) => cell.active && !cell.matched);
             await interaction.update({
+                embeds: [newEmbed],
                 components: this.container.caches.memoryMatch
                     .getBoardComponents(interaction.user.id)
                     .map((row, i) =>
@@ -74,14 +85,36 @@ export class HelpSelectHandler extends InteractionHandler {
                 interaction.user.id,
                 board,
             );
-            setTimeout(() => {
-                interaction.editReply({
-                    components:
-                        this.container.caches.memoryMatch.getBoardComponents(
-                            interaction.user.id,
+
+            if (mmData.triesRemaining <= 0) {
+                await interaction.editReply({
+                    embeds: [newEmbed],
+                    components: this.container.caches.memoryMatch
+                        .getBoardComponents(interaction.user.id)
+                        .map((row, i) =>
+                            row.setComponents(
+                                row.components.map((component, j) => {
+                                    component.setEmoji(
+                                        emojiReplacements[board[i][j].item],
+                                    );
+                                    component.setDisabled(true);
+                                    return component;
+                                }),
+                            ),
                         ),
                 });
-            }, 1000);
+                this.container.caches.memoryMatch.remove(interaction.user.id);
+            } else {
+                setTimeout(() => {
+                    interaction.editReply({
+                        embeds: [newEmbed],
+                        components:
+                            this.container.caches.memoryMatch.getBoardComponents(
+                                interaction.user.id,
+                            ),
+                    });
+                }, 1000);
+            }
             return;
         }
         await interaction.update({

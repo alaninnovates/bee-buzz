@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 
 interface MemoryMatchBoardItem {
-    item: string;
+    item: keyof typeof emojiReplacements;
     active: boolean;
     matched: boolean;
 }
@@ -9,7 +9,17 @@ type MemoryMatchBoard = MemoryMatchBoardItem[][];
 
 type MemoryMatchLevel = 'regular' | 'mega' | 'extreme';
 
-const emojiReplacements = {
+interface MemoryMatchData {
+    data: {
+        item: string;
+        amount: number;
+    }[];
+    board: MemoryMatchBoard;
+    level: MemoryMatchLevel;
+    triesRemaining: number;
+}
+
+export const emojiReplacements = {
     treat: '🍬',
     blueberry: '🫐',
     pineapple: '🍍',
@@ -17,23 +27,13 @@ const emojiReplacements = {
     kiwi: '🥝',
     royalJelly: '🫙',
     brick: '🧱',
-    silverEgg: '🥚🩶',
-    goldEgg: '🥚⭐',
-    diamondEgg: '🥚💎',
+    silverEgg: '🩶',
+    goldEgg: '⭐',
+    diamondEgg: '💎',
 };
 
 export class MemoryMatchCache {
-    private cache: Map<
-        string,
-        {
-            data: {
-                item: string;
-                amount: number;
-            }[];
-            board: MemoryMatchBoard;
-            level: MemoryMatchLevel;
-        }
-    >;
+    private cache: Map<string, MemoryMatchData>;
 
     constructor() {
         this.cache = new Map();
@@ -69,9 +69,27 @@ export class MemoryMatchCache {
             amount: number;
         }[],
         level: MemoryMatchLevel,
-    ): void {
+    ): MemoryMatchData {
         const board = this.generateBoard(data);
-        this.cache.set(userId, { data, board, level });
+        const mmData = { data, board, level, triesRemaining: 5 };
+        this.cache.set(userId, mmData);
+        return mmData;
+    }
+
+    public get(userId: string): MemoryMatchData {
+        const entry = this.cache.get(userId);
+        if (!entry) {
+            throw new Error('No memory match game found for this user.');
+        }
+        return entry;
+    }
+
+    public set(userId: string, data: MemoryMatchData): void {
+        this.cache.set(userId, data);
+    }
+
+    public remove(userId: string): void {
+        this.cache.delete(userId);
     }
 
     public setBoard(userId: string, board: MemoryMatchBoard): void {
