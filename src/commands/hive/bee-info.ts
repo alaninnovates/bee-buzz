@@ -1,7 +1,12 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { beeData } from '../../lib/data/bee';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import {
+    ActionRowBuilder,
+    ApplicationIntegrationType,
+    ButtonBuilder,
+    ButtonStyle,
+} from 'discord.js';
 import { getBeeDataEmbed } from '../../interaction-handlers/bee-info';
 
 @ApplyOptions<Command.Options>({
@@ -28,6 +33,9 @@ export class BeeInfoCommand extends Command {
                                     }),
                                 ),
                             ),
+                    )
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
                     ),
             {
                 idHints: ['1395390400306614383'],

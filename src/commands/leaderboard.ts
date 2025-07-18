@@ -1,6 +1,6 @@
 import { Command } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
-import { EmbedBuilder } from 'discord.js';
+import { ApplicationIntegrationType, EmbedBuilder } from 'discord.js';
 
 const topEmojis = ['🥇', '🥈', '🥉'];
 
@@ -12,7 +12,12 @@ export class LeaderboardCommand extends Command {
     public override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand(
             (builder) =>
-                builder.setName(this.name).setDescription(this.description),
+                builder
+                    .setName(this.name)
+                    .setDescription(this.description)
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
+                    ),
             {
                 idHints: ['1395401934503940098'],
             },

@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { EmbedBuilder } from 'discord.js';
+import { ApplicationIntegrationType, EmbedBuilder } from 'discord.js';
 import {
     calculateForage,
     calculateHoney,
@@ -19,7 +19,12 @@ export class HarvestCommand extends Command {
     public override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand(
             (builder) =>
-                builder.setName(this.name).setDescription(this.description),
+                builder
+                    .setName(this.name)
+                    .setDescription(this.description)
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
+                    ),
             {
                 idHints: ['1393946833512042600'],
             },

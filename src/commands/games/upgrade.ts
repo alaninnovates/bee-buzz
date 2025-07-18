@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { Colors, EmbedBuilder } from 'discord.js';
+import { ApplicationIntegrationType, Colors, EmbedBuilder } from 'discord.js';
 import { upgradeReqirements } from '../../lib/data/upgrade';
 import { emojiReplacements, Item } from '../../lib/data/items';
 import { UserDocument } from '../../lib/types';
@@ -45,6 +45,9 @@ export class UpgradeCommand extends Command {
                                 { name: 'Memory Match', value: 'memory-match' },
                                 { name: 'Fight', value: 'fight' },
                             ),
+                    )
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
                     ),
             {
                 idHints: ['1395419518293114880'],

@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { EmbedBuilder } from 'discord.js';
+import { ApplicationIntegrationType, EmbedBuilder } from 'discord.js';
 import { UserDocument } from '../lib/types';
 import { emojiReplacements } from '../lib/data/items';
 import { toTitleCase } from '@sapphire/utilities';
@@ -13,7 +13,12 @@ export class InventoryCommand extends Command {
     public override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand(
             (builder) =>
-                builder.setName(this.name).setDescription(this.description),
+                builder
+                    .setName(this.name)
+                    .setDescription(this.description)
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
+                    ),
             {
                 idHints: ['1395490255951499466'],
             },

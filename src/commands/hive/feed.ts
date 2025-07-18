@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import {
     ActionRowBuilder,
+    ApplicationIntegrationType,
     EmbedBuilder,
     StringSelectMenuBuilder,
 } from 'discord.js';
@@ -41,6 +42,9 @@ export class FeedCommand extends Command {
                             .setDescription('Number of treats to feed')
                             .setRequired(false)
                             .setMinValue(1),
+                    )
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
                     ),
             {
                 idHints: ['1395414612689682633'],

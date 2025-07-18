@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { EmbedBuilder } from 'discord.js';
+import { ApplicationIntegrationType, EmbedBuilder } from 'discord.js';
 import { beeData } from '../../lib/data/bee';
 import { breedBees, calculateBreedCost } from '../../lib/data/breed';
 import { UserDocument } from '../../lib/types';
@@ -39,6 +39,9 @@ export class BreedCommand extends Command {
                                     value: key,
                                 })),
                             ),
+                    )
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
                     ),
             {
                 idHints: ['1394134984692076615'],

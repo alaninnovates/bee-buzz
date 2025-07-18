@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { EmbedBuilder } from 'discord.js';
+import { ApplicationIntegrationType, EmbedBuilder } from 'discord.js';
 import { calculateForage, calculateMaxForageTime } from '../../lib/data/forage';
 import { ForageDocument, UserDocument } from '../../lib/types';
 import { renderBeeText } from '../../lib/render-hive';
@@ -14,7 +14,12 @@ export class ForageCommand extends Command {
     public override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand(
             (builder) =>
-                builder.setName(this.name).setDescription(this.description),
+                builder
+                    .setName(this.name)
+                    .setDescription(this.description)
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
+                    ),
             {
                 idHints: ['1393946832018870364'],
             },

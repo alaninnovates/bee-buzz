@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { Colors, EmbedBuilder } from 'discord.js';
+import { ApplicationIntegrationType, Colors, EmbedBuilder } from 'discord.js';
 import { Item } from '../../lib/data/items';
 import { UserDocument } from '../../lib/types';
 
@@ -123,6 +123,9 @@ export class MemoryMatchCommand extends Command {
                                 { name: 'Mega', value: 'mega' },
                                 { name: 'Extreme', value: 'extreme' },
                             ),
+                    )
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
                     ),
             {
                 idHints: ['1395414702594723983'],

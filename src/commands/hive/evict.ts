@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { UserDocument } from '../../lib/types';
 import { getEvictResponse } from '../../interaction-handlers/evict-select';
+import { ApplicationIntegrationType } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
     name: 'evict',
@@ -11,7 +12,12 @@ export class EvictCommand extends Command {
     public override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand(
             (builder) =>
-                builder.setName(this.name).setDescription(this.description),
+                builder
+                    .setName(this.name)
+                    .setDescription(this.description)
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
+                    ),
             {
                 idHints: ['1395390401883410585'],
             },

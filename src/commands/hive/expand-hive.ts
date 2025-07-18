@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { calculateExpandHiveCost } from '../../lib/constants';
-import { Colors, EmbedBuilder } from 'discord.js';
+import { ApplicationIntegrationType, Colors, EmbedBuilder } from 'discord.js';
 import { UserDocument } from '../../lib/types';
 
 @ApplyOptions<Command.Options>({
@@ -12,7 +12,12 @@ export class ExpandHiveCommand extends Command {
     public override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand(
             (builder) =>
-                builder.setName(this.name).setDescription(this.description),
+                builder
+                    .setName(this.name)
+                    .setDescription(this.description)
+                    .setIntegrationTypes(
+                        ApplicationIntegrationType.GuildInstall,
+                    ),
             {
                 idHints: ['1395390403145891943'],
             },
